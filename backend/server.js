@@ -2,7 +2,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const path = require('path'); // Make sure path is imported
+const path = require('path');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const itemRoutes = require('./routes/items');
@@ -14,11 +14,30 @@ const app = express();
 
 // --- Middleware ---
 app.use(express.json());
-app.use(cors());
+
+// Configure CORS for production
+// IMPORTANT: Replace 'YOUR_FRONTEND_URL' with the actual URL of your deployed frontend
+// For example: 'https://your-lost-and-found-frontend.netlify.app'
+const allowedOrigins = [
+    'http://localhost:3000', // Keep for local development
+    'YOUR_FRONTEND_URL'      // Replace this with your actual deployed frontend URL
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        // or if the origin is in our allowedOrigins list
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true, // Allow cookies to be sent
+}));
 
 // Serve static files from the 'uploads' directory
-// This line is crucial for images to be accessible
-// __dirname is the current directory (backend), 'uploads' is the folder name
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- Routes ---

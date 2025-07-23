@@ -1,22 +1,20 @@
 // frontend/src/api/axios.js
 import axios from 'axios';
 
-// Create an Axios instance with a base URL for the backend API
-// IMPORTANT: Adjust this URL if your backend runs on a different address/port
+// Use an environment variable for the backend API URL
+// In development, this will be 'http://localhost:5000/api'
+// In production, you will set REACT_APP_API_URL on your hosting platform (e.g., Netlify/Vercel)
 const API = axios.create({
-    baseURL: 'http://localhost:5001/api', // Default backend API URL
+    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5001/api',
 });
 
 // Request interceptor to add the JWT token to headers for authenticated requests
 API.interceptors.request.use((req) => {
-    // Check if a token exists in local storage
     if (localStorage.getItem('userInfo')) {
-        // Parse the user info to get the token
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        // Add the Authorization header with Bearer token
         req.headers.Authorization = `Bearer ${userInfo.token}`;
     }
-    return req; // Return the modified request config
+    return req;
 });
 
-export default API; // Export the configured Axios instance
+export default API;
