@@ -5,7 +5,7 @@ import axios from 'axios';
 // In development, this will be 'http://localhost:5000/api'
 // In production, you will set REACT_APP_API_URL on your hosting platform (e.g., Netlify/Vercel)
 const API = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5001/api',
+    baseURL: process.env.REACT_APP_API_URL || 'https://lost-and-found-ncyu.onrender.com',
 });
 
 // Request interceptor to add the JWT token to headers for authenticated requests
