@@ -20,9 +20,8 @@ app.use(express.json());
 // For example: 'https://your-lost-and-found-frontend.netlify.app'
 const allowedOrigins = [
     'http://localhost:3000', // Keep for local development
-    'YOUR_FRONTEND_URL'      // Replace this with your actual deployed frontend URL
+    'https://lost-and-found-ncyu.onrender.com', // Your deployed frontend URL (without /api)
 ];
-
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
